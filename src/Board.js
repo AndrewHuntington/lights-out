@@ -1,14 +1,13 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import Cell from "./Cell";
-import './Board.css';
-
+import "./Board.css";
 
 /** Game board of Lights out.
  *
  * Properties:
  *
- * - nrows: number of rows of board
- * - ncols: number of cols of board
+ * - nrows: number of rows of board (default: 5)
+ * - ncols: number of cols of board (default: 5)
  * - chanceLightStartsOn: float, chance any cell is lit at start of game
  *
  * State:
@@ -30,28 +29,45 @@ import './Board.css';
  **/
 
 class Board extends Component {
+  static defaultProps = {
+    nrows: 5,
+    ncols: 5,
+    chanceLightStartsOn: 0.5,
+  };
 
   constructor(props) {
     super(props);
-
-    // TODO: set initial state
+    this.state = {
+      hasWon: false,
+      board: this.createBoard(),
+    };
+    this.createBoard = this.createBoard.bind(this);
   }
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
 
   createBoard() {
+    const { nrows, ncols } = this.props;
     let board = [];
     // TODO: create array-of-arrays of true/false values
-    return board
+    for (let i = 0; i < nrows; i++) {
+      board[i] = [];
+      for (let j = 0; j < ncols; j++) {
+        // TODO: randomly choose between true/false
+        board[i][j] = false;
+      }
+    }
+
+    console.log({ board }); // TODO: remove
+    return board;
   }
 
   /** handle changing a cell: update board & determine if winner */
 
   flipCellsAround(coord) {
-    let {ncols, nrows} = this.props;
+    let { ncols, nrows } = this.props;
     let board = this.state.board;
     let [y, x] = coord.split("-").map(Number);
-
 
     function flipCell(y, x) {
       // if this coord is actually on board, flip it
@@ -66,23 +82,31 @@ class Board extends Component {
     // win when every cell is turned off
     // TODO: determine is the game has been won
 
-    this.setState({board, hasWon});
+    // TODO: remove comment
+    // this.setState({ board, hasWon });
   }
-
 
   /** Render game board or winning message. */
 
   render() {
-
     // if the game is won, just show a winning msg & render nothing else
-
     // TODO
-
     // make table board
-
     // TODO
+    return (
+      <table className="Board">
+        <tbody>
+          <tr>
+            <Cell />
+            <Cell />
+            <Cell />
+            <Cell />
+            <Cell />
+          </tr>
+        </tbody>
+      </table>
+    );
   }
 }
-
 
 export default Board;
