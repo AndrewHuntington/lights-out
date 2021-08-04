@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Cell from "./Cell";
+import { randomTrueOrFalse } from "./helpers";
 import "./Board.css";
 
 /** Game board of Lights out.
@@ -42,23 +43,21 @@ class Board extends Component {
       board: this.createBoard(),
     };
     this.createBoard = this.createBoard.bind(this);
+    this.flipCellsAround = this.flipCellsAround.bind(this);
   }
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
 
   createBoard() {
-    const { nrows, ncols } = this.props;
+    const { ncols, nrows } = this.props;
     let board = [];
-    // TODO: create array-of-arrays of true/false values
+    // creates an array-of-arrays of true/false values
     for (let i = 0; i < nrows; i++) {
       board[i] = [];
       for (let j = 0; j < ncols; j++) {
-        // TODO: randomly choose between true/false
-        board[i][j] = false;
+        board[i][j] = randomTrueOrFalse(this.props.chanceLightStartsOn);
       }
     }
-
-    console.log({ board }); // TODO: remove
     return board;
   }
 
@@ -78,12 +77,13 @@ class Board extends Component {
     }
 
     // TODO: flip this cell and the cells around it
-
+    flipCell(y, x);
     // win when every cell is turned off
     // TODO: determine is the game has been won
 
     // TODO: remove comment
     // this.setState({ board, hasWon });
+    this.setState({ board }); // TODO: remove
   }
 
   /** Render game board or winning message. */
@@ -91,19 +91,27 @@ class Board extends Component {
   render() {
     // if the game is won, just show a winning msg & render nothing else
     // TODO
-    // make table board
-    // TODO
+
+    const tableRows = this.state.board.map((e, row) => (
+      <tr key={row}>
+        {e.map((val, col) => {
+          const key = `${row}-${col}`;
+
+          return (
+            <Cell
+              isLit={val}
+              key={key}
+              coord={key}
+              flipCellsAroundMe={this.flipCellsAround}
+            />
+          );
+        })}
+      </tr>
+    ));
+
     return (
       <table className="Board">
-        <tbody>
-          <tr>
-            <Cell />
-            <Cell />
-            <Cell />
-            <Cell />
-            <Cell />
-          </tr>
-        </tbody>
+        <tbody>{tableRows}</tbody>
       </table>
     );
   }
