@@ -1,3 +1,8 @@
 .Board {
   margin: 0 auto;
 }
+
+.Board-win-msg {
+  font-size: 3rem;
+  font-weight: bold;
+}
