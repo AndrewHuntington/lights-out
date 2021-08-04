@@ -44,6 +44,33 @@ class Board extends Component {
     };
     this.createBoard = this.createBoard.bind(this);
     this.flipCellsAround = this.flipCellsAround.bind(this);
+    this.checkIfBoardIsWinnable = this.checkIfBoardIsWinnable.bind(this);
+  }
+
+  /** ensure that every came is winnable by ensuring each row and col has an
+   * even number of lit cells
+   * */
+
+  checkIfBoardIsWinnable(board) {
+    const { ncols, nrows } = this.props;
+    let winnable = true;
+
+    // make sure an even number of cells are lit each row
+    board.forEach((row) => {
+      const numTrue = row.filter((e) => e === true).length;
+      if (numTrue % 2 !== 0) winnable = false;
+    });
+
+    // make sure an even number of cells are lit each column
+    for (let col = 0; col < ncols; col++) {
+      let numTrue = 0;
+      for (let row = 0; row < nrows; row++) {
+        if (board[row][col] === true) numTrue++;
+      }
+      if (numTrue % 2 !== 0) winnable = false;
+    }
+
+    return winnable;
   }
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
@@ -57,6 +84,10 @@ class Board extends Component {
       for (let j = 0; j < ncols; j++) {
         board[i][j] = randomTrueOrFalse(this.props.chanceLightStartsOn);
       }
+    }
+
+    if (!this.checkIfBoardIsWinnable(board)) {
+      board = this.createBoard();
     }
     return board;
   }
@@ -82,12 +113,12 @@ class Board extends Component {
     flipCell(y - 1, x);
     flipCell(y, x + 1);
     flipCell(y, x - 1);
+
     // win when every cell is turned off
-    // TODO: determine is the game has been won
     if (!board.flat().includes(true)) {
       hasWon = true;
     }
-    // TODO: remove comment
+
     this.setState({ board, hasWon });
   }
 
