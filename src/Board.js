@@ -42,9 +42,7 @@ class Board extends Component {
       hasWon: false,
       board: this.createBoard(),
     };
-    this.createBoard = this.createBoard.bind(this);
     this.flipCellsAround = this.flipCellsAround.bind(this);
-    this.checkIfBoardIsWinnable = this.checkIfBoardIsWinnable.bind(this);
   }
 
   /** ensure that every came is winnable by ensuring each row and col has an
@@ -76,13 +74,13 @@ class Board extends Component {
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
 
   createBoard() {
-    const { ncols, nrows } = this.props;
+    const { ncols, nrows, chanceLightStartsOn } = this.props;
     let board = [];
     // creates an array-of-arrays of true/false values
     for (let i = 0; i < nrows; i++) {
       board[i] = [];
       for (let j = 0; j < ncols; j++) {
-        board[i][j] = randomTrueOrFalse(this.props.chanceLightStartsOn);
+        board[i][j] = randomTrueOrFalse(chanceLightStartsOn);
       }
     }
 
@@ -125,9 +123,6 @@ class Board extends Component {
   /** Render game board or winning message. */
 
   render() {
-    // if the game is won, just show a winning msg & render nothing else
-    // TODO
-
     const tableRows = this.state.board.map((e, row) => (
       <tr key={row}>
         {e.map((val, col) => {
@@ -146,13 +141,15 @@ class Board extends Component {
     ));
 
     return (
-      <table className="Board">
+      <div className="Board">
         {this.state.hasWon ? (
           <p className="Board-win-msg">You win!</p>
         ) : (
-          <tbody>{tableRows}</tbody>
+          <table>
+            <tbody>{tableRows}</tbody>
+          </table>
         )}
-      </table>
+      </div>
     );
   }
 }
