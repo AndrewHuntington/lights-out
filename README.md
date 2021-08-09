@@ -2,13 +2,23 @@
 
 Based on the game "Lights Out" but Tiger Electronics. Click the squares and try to make all the lights go out.
 
-## How to Install
+## How To Setup
+
+First, clone the repository into a directory on your machine. From inside the project directory, do the following:
+
+Install dependencies:
 
     npm install
 
-## How to Run
+## Run in Development Mode
 
-    npm run start
+    npm start
+
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+## Build for Production
+
+    npm start build
 
 ## Things to Improve
 
