@@ -2,6 +2,8 @@
 
 Based on the game "Lights Out" but Tiger Electronics. Click the squares and try to make all the lights go out.
 
+### [Play It Live Here](https://andrewhuntington.github.io/lights-out/)
+
 ## How To Setup
 
 First, clone the repository into a directory on your machine. From inside the project directory, do the following:
